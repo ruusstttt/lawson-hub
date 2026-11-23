@@ -9,5 +9,6 @@
 - Known test limitation: the embedded preview browser cannot retrieve Blob downloads from iframes, and its top-level Blob download wait timed out. Generation success was observed, but receipt of generated PNG/ZIP files on disk was not verified through that preview tool. Direct campaign PNG download succeeded. Recheck generated downloads in a regular browser after deployment.
 - Windows EXE was copied from the prior verified 4.1.2.0 delivery; it was not rebuilt or rerun in this web-port task. QR readability at final broadcast size and on a physical phone was not repeated.
 - The web renderer can differ from Windows GDI+ text antialiasing, shadows and Legacy Compact drawing. Advertising PNGs remain byte-identical; they are not re-rendered.
+- GitHub Actions run `45255690461` passed and deployed commit `e36acf62f1c37a6f521da1951d6852bab7b53fd8`. Opened https://ruusstttt.github.io/lawson-hub/ and verified both tabs, the blue Polymarket graphic and the loaded thumbnail photo library at 390 px width. The downloaded Polymarket PNG matches the site file by SHA-256 (`AE89BF0120357E1B0581D56FB190C83D5238F3A73A1D175D516620D8C866DABF`).
 
 This records the checked scope, not a claim that every historical schedule, browser or device has been tested.

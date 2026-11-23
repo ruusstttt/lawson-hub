@@ -8,3 +8,5 @@
 - Exportador portado para Canvas com seis estilos, edição da rodada, PNG/ZIP, agenda ESPN/fallback nflverse, modo manual e persistência local/JSON. Dez anúncios copiados sem re-encode.
 - Thumbnails mantém o renderizador anterior. Alterados título, apresentação da interface e download com link reutilizável; não persiste uploads após recarregar.
 - Testes e limitações em `VERIFICATION.md`. Publicação deve incluir somente site, testes, ferramentas e documentação deste Hub; o arquivo de originais não entra no Git.
+- Repositório público criado: https://github.com/ruusstttt/lawson-hub. Site: https://ruusstttt.github.io/lawson-hub/.
+- Publicação inicial `e36acf62f1c37a6f521da1951d6852bab7b53fd8`, execução Actions `45255690461` concluída com sucesso. Abas, anúncio azul e biblioteca thumbnail carregados no endereço público; layout verificado a 390 px de largura.

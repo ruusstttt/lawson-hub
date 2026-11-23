@@ -2,6 +2,10 @@
 
 Creative tools for The Lawson Show, together in one browser workspace.
 
+**Open the site:** https://ruusstttt.github.io/lawson-hub/
+
+**Repository:** https://github.com/ruusstttt/lawson-hub
+
 - **NFL Exporter:** schedule import, editable spreads and picks, six overlay styles, full-resolution 1920 × 200 PNGs and round ZIPs. Ten advertising campaigns include both blue Polymarket/LAWSON designs with their original QR codes and terms.
 - **Thumbnails:** the existing thumbnail builder, with 55 John photos, 35 logos, team presets, uploads and 1280 × 720 or 2560 × 1440 PNG export.
 
