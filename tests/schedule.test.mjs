@@ -1,0 +1,17 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {parseEspn,parseNflverse,validateGames,validateSelection,maxWeek,espnParams,createScheduleLoader} from '../site/exporter/schedule.mjs';
+const fixture=JSON.parse(await readFile(new URL('./fixtures/espn-2026-week9.json',import.meta.url),'utf8'));
+const selection={season:2026,phase:'regular',week:9};
+test('ESPN fixture returns all 15 games with correct sides',()=>{const games=parseEspn(fixture,selection);assert.equal(games.length,15);const first=fixture.events[0].competitions[0].competitors;for(const c of first)assert(games.some(g=>g[c.homeAway]===({'WSH':'WAS','JAC':'JAX','LA':'LAR'}[c.team.abbreviation]||c.team.abbreviation)));});
+test('refuses another round instead of exporting mislabeled games',()=>assert.throws(()=>parseEspn(fixture,{...selection,week:10}),/does not match/));
+test('refuses duplicated teams',()=>{const copy=structuredClone(fixture);copy.events.push(copy.events[0]);assert.throws(()=>parseEspn(copy,selection),/Duplicate/);});
+test('refuses unknown teams and invalid dates',()=>{const copy=structuredClone(fixture);copy.events[0].competitions[0].competitors[0].team.abbreviation='FAKE';assert.throws(()=>parseEspn(copy,selection),/Unknown/);copy.events[0].date='no';assert.throws(()=>parseEspn(copy,selection));});
+test('maps preseason and Super Bowl away from Hall of Fame and Pro Bowl',()=>{assert.equal(espnParams({...selection,phase:'preseason',week:1}).week,2);assert.deepEqual(espnParams({...selection,phase:'superbowl',week:1}),{type:3,week:5});});
+test('historical season limits and invalid input',()=>{assert.equal(maxWeek(2020,'regular'),17);assert.equal(maxWeek(2021,'regular'),18);assert.equal(maxWeek(2020,'preseason'),4);assert.equal(maxWeek(2021,'preseason'),3);assert.throws(()=>validateSelection({...selection,week:19}));assert.throws(()=>validateSelection({...selection,phase:'other'}));});
+test('partial playoff round rejected; a manual subset can be edited',()=>{const games=[{away:'KC',home:'SF'}],s={...selection,phase:'wildcard',week:1};assert.throws(()=>validateGames(games,s),/incomplete/);assert.equal(validateGames(games,s,{complete:false}).length,1);});
+test('fallback handles quoted CSV fields and team aliases',()=>{const csv='season,game_type,week,gameday,away_team,home_team,note\n2026,REG,9,2026-11-08,JAC,WSH,"a,b"';const result=parseNflverse(csv,selection);assert.equal(result[0].away,'JAX');assert.equal(result[0].home,'WAS');assert.throws(()=>parseNflverse(csv,{...selection,week:10}));});
+test('falls back when ESPN fails',async()=>{const load=createScheduleLoader(async url=>{if(url.includes('espn'))throw Error('offline');return new Response('season,game_type,week,gameday,away_team,home_team\n2026,REG,9,2026-11-08,KC,SF');});const result=await load(selection);assert.equal(result.source,'nflverse');assert.equal(result.games.length,1);});
+test('cache does not retain caller edits',async()=>{let calls=0;const load=createScheduleLoader(async()=>{calls++;return new Response(JSON.stringify(fixture));});const first=await load(selection);first.games[0].pick='modified';const next=await load(selection);assert.equal(calls,1);assert.equal(next.games[0].pick,'');assert.match(next.source,/cached/);});
+test('rejects unavailable schedules and does not fabricate games',async()=>{const load=createScheduleLoader(async()=>new Response('',{status:503}));await assert.rejects(()=>load(selection),/No verified schedule/);});

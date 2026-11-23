@@ -1,0 +1,7 @@
+{
+  "name": "lawson-hub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The Lawson Show creative workspace",
+  "scripts": {"start":"node tools/serve.cjs","test":"node --test tests/*.test.mjs"}
+}

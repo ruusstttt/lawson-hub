@@ -1,0 +1,30 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NFL Exporter · Lawson Hub</title><link rel="stylesheet" href="../assets/fonts.css"><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="page-heading"><div><p class="eyebrow">NFL EXPORTER</p><h1>From your picks to the screen.</h1></div><div class="mode-tabs" aria-label="Export type"><button type="button" id="games-tab" aria-pressed="true">Weekly games</button><button type="button" id="ads-tab" aria-pressed="false">Advertising <span>10</span></button></div></header>
+<section id="games-panel" class="workspace">
+  <aside class="controls">
+    <div class="section-title"><span class="step">01</span><h2>Choose your round</h2></div>
+    <div class="two-cols"><label>Season<select id="season"></select></label><label>Week<select id="week"></select></label></div>
+    <label>Season phase<select id="phase"><option value="regular">Regular season</option><option value="preseason">Preseason</option><option value="wildcard">Wild Card</option><option value="divisional">Divisional</option><option value="conference">Conference Championships</option><option value="superbowl">Super Bowl</option></select></label>
+    <button class="primary wide" id="load">Load schedule</button>
+    <p class="help">Load the round, add your spreads and picks, then export your graphics.</p>
+    <hr>
+    <div class="section-title"><span class="step">02</span><h2>Pick a look</h2></div>
+    <label>Overlay style<select id="layout"><option value="stadium-gold">Stadium Gold</option><option value="nfl-broadcast">NFL Broadcast</option><option value="christmas">Christmas</option><option value="thanksgiving">Thanksgiving</option><option value="halloween">Halloween</option><option value="legacy-compact">Legacy Compact</option></select></label>
+    <div class="spec"><b>1920 × 200</b><span>Full-resolution PNG</span></div>
+    <hr>
+    <details id="manual"><summary>Add a matchup manually</summary><label>Away team<select id="away"></select></label><label>Home team<select id="home"></select></label><button class="secondary wide" id="add-game">Add matchup</button><p class="help">Manual matchups belong to the round selected above.</p></details>
+    <details class="project-files"><summary>Save or restore this round</summary><button id="save-project" class="secondary wide">Save round JSON</button><label class="file-label">Import round JSON<input type="file" id="import-project" accept=".json,application/json"></label></details>
+  </aside>
+  <div class="main-stage">
+    <div id="status" class="status" role="status" aria-live="polite">Choose a round to get started. You can also add matchups manually.</div>
+    <section class="preview-card"><div class="preview-heading"><div><p class="eyebrow">ON-AIR PREVIEW</p><h2 id="matchup-name">Your next matchup</h2></div><span id="layout-name" class="tag">Stadium Gold</span></div><div class="canvas-wrap"><canvas id="preview" width="1920" height="200" aria-label="Selected matchup overlay preview"></canvas></div><div class="preview-footer"><span id="preview-note">Select a game to preview your overlay.</span><button id="download" class="primary" disabled>Export PNG</button></div></section>
+    <section class="games-card"><div class="list-heading"><div><p class="eyebrow">THE LINEUP</p><h2 id="round-title">No round loaded</h2></div><button class="secondary" id="download-all" disabled>Export round ZIP</button></div><div id="empty" class="empty"><span class="empty-field" aria-hidden="true">▥</span><h3>A clean slate for game day.</h3><p>Your matchups will appear here.<br>Each row gets its own spread, pick and PNG.</p></div><div class="table-scroll"><table id="game-table" hidden><thead><tr><th scope="col">Preview</th><th scope="col">Matchup</th><th scope="col">Spread</th><th scope="col">Pick</th><th scope="col"><span class="sr-only">Remove game</span></th></tr></thead><tbody id="game-rows"></tbody></table></div></section>
+  </div>
+</section>
+<section id="ads-panel" hidden>
+  <div class="ad-heading"><div><p class="eyebrow">CAMPAIGN LIBRARY</p><h2>Ready when you go live.</h2><p>Original artwork, original quality. Select a campaign to export.</p></div><button id="download-ads" class="secondary">Download all 10 · ZIP</button></div>
+  <section class="preview-card ad-feature"><div class="preview-heading"><h2 id="ad-name"></h2><span class="tag" id="ad-size"></span></div><div class="ad-preview"><img id="ad-preview-image" alt="" decoding="async"></div><div class="preview-footer"><span>QR code and terms included in the Polymarket artwork.</span><a id="ad-download" class="primary" download>Export original PNG</a></div></section>
+  <div id="ad-grid" class="ad-grid"></div><p id="ad-status" class="status" role="status" aria-live="polite"></p>
+</section>
+<script type="module" src="app.mjs"></script></body></html>
