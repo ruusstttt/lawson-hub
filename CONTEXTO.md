@@ -1,5 +1,10 @@
 # Contexto — Lawson Hub
 
+## 24/11/2026 — logos das thumbnails
+
+- A Logo Library apresenta os 35 logos incluídos nos dois seletores e uma prévia de cada seleção. O Logo A segue o preset ou o nome do time no início do palpite. O Logo B começa vazio e pode receber o adversário no modo VS. A opção de correspondência automática pode ser desativada. O upload continua disponível em **Add or replace logo files**.
+- Testados no navegador o carregamento sem upload, o palpite inicial Chiefs, a correspondência Buccaneers/Bucs, a troca de preset, a seleção manual e a prévia no modo VS. Os 15 testes existentes passaram.
+
 ## 23/11/2026 — criação
 
 - Pedido: reunir exportador NFL atualizado com Polymarket azul e gerador de thumbnails em uma pasta e transformar em site com abas extensíveis, hospedado no GitHub do usuário.

@@ -1,5 +1,7 @@
 # Pendências — Lawson Hub
 
+- [x] Mostrar prévias e selecionar automaticamente o Logo A na biblioteca de thumbnails (24/11/2026).
+
 - [x] Consolidar os dois projetos originais em pasta própria, sem modificar as fontes.
 - [x] Criar site com duas abas e registro extensível de ferramentas.
 - [x] Portar exportador, integrar anúncios Polymarket e conservar biblioteca de thumbnails.

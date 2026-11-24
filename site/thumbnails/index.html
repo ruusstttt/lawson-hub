@@ -146,14 +146,24 @@ button:disabled{opacity:.45;cursor:wait}
   </fieldset>
 
   <fieldset><legend>Logo library</legend>
-    <label>Add or replace logo files</label>
-    <input type="file" id="fLogos" accept="image/*" multiple>
-    <p class="hint" id="logoCount">Loading the included logo library…</p>
-    <label>Logo A</label><select id="logoA"><option value="">— none —</option></select>
-    <label>Logo B (VS mode only)</label><select id="logoB"><option value="">— none —</option></select>
+    <p class="hint" id="logoCount" role="status">Loading the included logo library…</p>
+    <label for="logoA">Logo A</label>
+    <div class="logo-field">
+      <select id="logoA"><option value="">— none —</option></select>
+      <canvas id="logoAPreview" width="88" height="88" aria-hidden="true"></canvas>
+    </div>
+    <label for="logoB">Logo B (VS mode only)</label>
+    <div class="logo-field">
+      <select id="logoB"><option value="">— none —</option></select>
+      <canvas id="logoBPreview" width="88" height="88" aria-hidden="true"></canvas>
+    </div>
     <label>Logo size in frame <span id="logoZoomVal" class="val">100%</span></label>
     <input type="range" id="logoZoom" min="70" max="160" value="100">
-    <div class="chk"><input type="checkbox" id="logoAuto" checked><span>Pick the logo to match the team preset</span></div>
+    <label class="chk" for="logoAuto"><input type="checkbox" id="logoAuto" checked><span>Match Logo A to the team preset or pick</span></label>
+    <details class="logo-upload">
+      <summary>Add or replace logo files</summary>
+      <input type="file" id="fLogos" aria-label="Add or replace logo files" accept="image/*" multiple>
+    </details>
   </fieldset>
 
   <fieldset><legend>Colour</legend>
@@ -784,35 +794,60 @@ function tidyName(f){
 }
 function norm(x){ return x.toLowerCase().replace(/[^a-z0-9]/g,''); }
 
-function refreshLogoLists(){
-  const names=Object.keys(LOGOS).sort((a,b)=>a.localeCompare(b));
-  ['logoA','logoB'].forEach(id=>{
-    const sel=$(id), keep=sel.value;
-    sel.innerHTML='<option value="">— none —</option>';
-    names.forEach(n=>{ const o=document.createElement('option'); o.value=n; o.textContent=n; sel.appendChild(o); });
-    if(names.includes(keep)) sel.value=keep;
-  });
-  // so something is visible the moment a library is loaded
-  if(!$('logoA').value && names[0]) $('logoA').value=names[0];
-  if(!$('logoB').value && names[1]) $('logoB').value=names[1];
-  $('logoCount').textContent = names.length
-    ? `${names.length} logos ready. Included logos load automatically; added logos last for this session.`
-    : 'Nothing loaded — those files were not images.';
-  matchLogoToTeam();
+const logoSlots = ['logoA', 'logoB'];
+function updateLogoPreviews(){
+  for(const id of logoSlots){
+    const preview = $(id + 'Preview');
+    const ctx = preview.getContext('2d');
+    ctx.clearRect(0, 0, preview.width, preview.height);
+    const logo = LOGOS[$(id).value];
+    if(!logo) continue;
+    const scale = 72 / Math.max(logo.naturalWidth, logo.naturalHeight);
+    const width = logo.naturalWidth * scale;
+    const height = logo.naturalHeight * scale;
+    ctx.drawImage(logo, (preview.width - width) / 2, (preview.height - height) / 2, width, height);
+  }
   scheduleDraw();
 }
 
-/* if a filename looks like the selected team, select it automatically */
+function refreshLogoLists(){
+  const names = Object.keys(LOGOS).sort((a,b) => a.localeCompare(b));
+  for(const id of logoSlots){
+    const select = $(id);
+    const previous = select.value;
+    select.replaceChildren(new Option('— none —', ''), ...names.map(name => new Option(name, name)));
+    select.value = names.includes(previous) ? previous : '';
+  }
+  $('logoCount').textContent = names.length ? `${names.length} logos ready to use.` : 'No logos available. Add an image below.';
+  updateLogoPreviews();
+}
+
+function teamFromPick(){
+  const pick = $('oddsPick').value.trim().toLowerCase().replace(/[^a-z0-9]+/g, ' ') + ' ';
+  return Object.keys(TEAMS).find(team => {
+    if(!TEAMS[team]) return false;
+    const name = team.toLowerCase();
+    const nickname = name.split(' ').at(-1);
+    return pick.startsWith(name + ' ') || pick.startsWith(nickname + ' ') || (nickname === 'buccaneers' && pick.startsWith('bucs '));
+  });
+}
+
 function matchLogoToTeam(){
   if(!$('logoAuto').checked) return;
-  const team=$('team').value; if(!team || team.startsWith('—')) return;
-  const words=team.split(/\s+/);
-  const key=norm(words[words.length-1]);        // "Chiefs", "49ers", "Commanders"
-  const names=Object.keys(LOGOS);
-  const alias={buccaneers:'bucs'}[key]||key;
-  const hit=names.find(n=>norm(n)===key)||names.find(n=>norm(n)===alias)||names.find(n=>norm(n).includes(key));
-  if(hit) $('logoA').value=hit;
+  const preset = $('team').value;
+  const team = TEAMS[preset] ? preset : teamFromPick();
+  if(!team) return;
+  const nickname = norm(team.split(' ').at(-1));
+  const names = Object.keys(LOGOS);
+  const alias = nickname === 'buccaneers' ? 'bucs' : nickname;
+  const logo = names.find(name => norm(name) === nickname) || names.find(name => norm(name) === alias);
+  if(!logo) return;
+  $('logoA').value = logo;
+  updateLogoPreviews();
 }
+for(const id of logoSlots) $(id).addEventListener('change', updateLogoPreviews);
+$('oddsPick').addEventListener('input', matchLogoToTeam);
+$('logoAuto').addEventListener('change', matchLogoToTeam);
 document.querySelectorAll('input,select').forEach(el=>{
   if(el.type!=='file') el.addEventListener('input',scheduleDraw);
 });

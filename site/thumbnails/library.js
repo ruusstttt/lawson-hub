@@ -93,6 +93,7 @@ async function loadBundledLogos(){
         LOGOS[tidyName(name)]=await decodeImage(src);
       }));
       refreshLogoLists();
+      matchLogoToTeam();
       if(results.some(r=>r.status==='rejected')) $('logoCount').textContent+=' Some logos could not load; add them below.';
     }catch(error){$('logoCount').textContent='Bundled logos unavailable. Keep assets/ beside the HTML file, or add logo files below.';}
   });
@@ -107,6 +108,7 @@ $('fLogos').addEventListener('change',async e=>{
     refreshLogoLists();
     const failed=results.filter(r=>r.status==='rejected').length;
     if(failed)$('logoCount').textContent+=` ${failed} file(s) could not be opened.`;
+    e.target.value='';
   });
 });
 const catalog=window.MONEY_PICK_CATALOG||[];
