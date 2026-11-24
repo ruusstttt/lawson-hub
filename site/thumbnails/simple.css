@@ -1,0 +1,91 @@
+.thumbnail-modes {
+  display: flex;
+  gap: 4px;
+  padding: 9px clamp(14px, 3vw, 36px);
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  min-height: 55px;
+}
+.thumbnail-modes button {
+  width: auto;
+  color: var(--muted);
+  background: transparent;
+  padding: 8px 13px;
+  letter-spacing: 0;
+}
+.thumbnail-modes button[aria-selected="true"] {
+  color: var(--ink);
+  background: var(--panel2);
+  box-shadow: inset 0 -2px #ffc20e;
+}
+#thumbnail-editor[hidden], .simple-generator[hidden] { display: none; }
+@media (min-width: 851px) {
+  #thumbnail-editor { min-height: calc(100dvh - 55px); }
+  #thumbnail-editor .panel { top: 55px; height: calc(100dvh - 55px); }
+}
+
+.simple-generator {
+  --simple-yellow: #ffc20e;
+  display: grid;
+  grid-template-columns: minmax(290px, 345px) minmax(0, 1fr);
+  grid-template-areas: "matchup preview" "photos preview";
+  gap: 16px clamp(16px, 2vw, 28px);
+  padding: clamp(14px, 2.5vw, 32px);
+  margin: auto;
+  max-width: 1700px;
+  align-items: start;
+}
+.simple-matchup, .simple-gallery, .simple-preview {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 12px;
+  padding: 16px;
+  min-width: 0;
+}
+.simple-matchup { grid-area: matchup; }
+.simple-gallery { grid-area: photos; }
+.simple-preview { grid-area: preview; }
+.simple-generator h1, .simple-generator h2 { margin: 0 0 12px; }
+.simple-generator h1 { font: 400 22px/1.15 "Archivo Black", sans-serif; }
+.simple-generator h2 { font-size: 15px; }
+.simple-generator label { font-size: 13px; margin: 0 0 6px; }
+.simple-generator input[type="number"], .simple-generator select {
+  padding: 9px;
+  min-height: 40px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  color-scheme: dark;
+  font: 600 13px Archivo, sans-serif;
+}
+#simple-week { width: 92px; }
+.simple-teams { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: end; gap: 8px; margin-top: 14px; }
+.simple-teams label { display: flex; align-items: center; justify-content: space-between; min-height: 24px; }
+.simple-teams img { width: 26px; height: 24px; object-fit: contain; }
+.simple-teams > span { color: var(--simple-yellow); padding-bottom: 11px; font-size: 12px; font-weight: 800; }
+.simple-photos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; overflow: auto; max-height: clamp(180px, 39dvh, 460px); padding: 3px; }
+.simple-generator .simple-photos label { aspect-ratio: 1; margin: 0; background: var(--panel2); border: 1px solid var(--line); border-radius: 7px; cursor: pointer; overflow: hidden; position: relative; }
+.simple-photos input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; pointer-events: none; }
+.simple-photos label:hover { border-color: var(--muted); }
+.simple-photos label:has(input:checked) { border-color: var(--simple-yellow); box-shadow: inset 0 0 0 1px var(--simple-yellow); background: #342a16; }
+.simple-photos label:has(input:focus-visible) { outline: 2px solid #ffb497; outline-offset: 1px; }
+.simple-photos img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.simple-preview-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.simple-preview-header h2 { margin: 0 0 2px; }
+.simple-preview-header p { margin: 0; color: var(--muted); font-size: 12px; }
+#simple-download { width: auto; background: var(--simple-yellow); color: #181207; white-space: nowrap; }
+#simple-download:not(:disabled):hover { background: #ffd152; }
+#simple-canvas { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #0a0b0c; border-radius: 6px; }
+@media (min-width: 851px) {
+  #simple-canvas { width: min(100%, max(350px, calc((100dvh - 172px) * 16 / 9))); margin-inline: auto; }
+}
+#simple-status { margin: 10px 0 0; }
+#simple-status:empty { margin: 0; }
+@media (max-width: 850px) {
+  .simple-generator { grid-template-columns: minmax(0, 1fr); grid-template-areas: "matchup" "preview" "photos"; }
+  .simple-photos { max-height: 320px; }
+}

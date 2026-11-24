@@ -121,9 +121,14 @@ $('johnPhoto').addEventListener('change',selectPhoto);
 $('cMode').addEventListener('change',syncExportButtons);
 bindUpload('fJohn','john');bindUpload('fCa','ca');bindUpload('fBg','bg');
 Promise.resolve(document.fonts?document.fonts.ready:null).then(()=>{fontsReady=true;syncExportButtons();scheduleDraw();});
-loadBundledLogos();
-if(catalog.length){
-  $('johnPhoto').value=(catalog.find(p=>p.id==='55-handsup-shocked-gucci-white')||catalog[0]).id;
-  selectPhoto();
-}else{libraryStatus('Photo catalog unavailable. Upload a photo below or restore the assets folder.',true);}
+const bundledLogosReady = loadBundledLogos();
+let editorPhotoInitialized = false;
+function initializeEditorPhoto(){
+  if(editorPhotoInitialized) return;
+  editorPhotoInitialized = true;
+  if(catalog.length){
+    $('johnPhoto').value=(catalog.find(p=>p.id==='55-handsup-shocked-gucci-white')||catalog[0]).id;
+    selectPhoto();
+  }else{libraryStatus('Photo catalog unavailable. Upload a photo below or restore the assets folder.',true);}
+}
 syncExportButtons();

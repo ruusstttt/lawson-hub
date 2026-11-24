@@ -1,5 +1,7 @@
 # Pendências — Lawson Hub
 
+- [x] Criar **Simple generator** como padrão e manter o editor completo em **Editor mode** (24/11/2026).
+
 - [x] Mostrar prévias e selecionar automaticamente o Logo A na biblioteca de thumbnails (24/11/2026).
 
 - [x] Consolidar os dois projetos originais em pasta própria, sem modificar as fontes.

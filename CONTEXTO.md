@@ -1,5 +1,11 @@
 # Contexto — Lawson Hub
 
+## 24/11/2026 — gerador simples de thumbnails
+
+- A aba **Thumbnails** abre em **Simple generator**, com semana regular de 1 a 18, escolha dos dois times e galeria visual das 55 fotos existentes. O exemplo inicial é Week 5, Bills vs Rams. O layout 1280 × 720 usa amarelo dos Chargers, retrato à esquerda, molduras VS no alto, BEST BETS à direita e a faixa Money Pick.
+- O gerador carrega a foto selecionada em resolução original. As imagens menores da galeria são produzidas por `tools/build-photo-previews.ps1`. As referências anexadas orientam o layout. O placar de temporada é configurável no **Editor mode**.
+- O editor completo e o gerador retêm seus próprios controles ao alternar no mesmo carregamento. Verificados localmente a troca de modos por clique e teclado, seleção de fotos, validação da semana, logo dos times, geração do link PNG e layout a 390 px e 1280 px.
+
 ## 24/11/2026 — logos das thumbnails
 
 - A Logo Library apresenta os 35 logos incluídos nos dois seletores e uma prévia de cada seleção. O Logo A segue o preset ou o nome do time no início do palpite. O Logo B começa vazio e pode receber o adversário no modo VS. A opção de correspondência automática pode ser desativada. O upload continua disponível em **Add or replace logo files**.
